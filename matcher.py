@@ -1,5 +1,6 @@
 import boto3
 from datetime import datetime, timezone, timedelta
+import os
 
 dynamodb=boto3.resource("dynamodb",region_name="ap-south-1")
 table=dynamodb.Table("placement-opportunities")
@@ -7,7 +8,7 @@ table=dynamodb.Table("placement-opportunities")
 user_table = dynamodb.Table("user-profiles")
 
 sns = boto3.client("sns", region_name="ap-south-1")
-SNS_TOPIC_ARN = "arn:aws:sns:ap-south-1:535356159592:placement-alerts"
+SNS_TOPIC_ARN = os.environ["SNS_TOPIC_ARN"]
 
 def match_score(user_skills, job_skills):
     set1 = {s.lower().strip() for s in user_skills}
