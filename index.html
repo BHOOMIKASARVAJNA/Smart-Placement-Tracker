@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Placement Tracker</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #080818;
+            color: #ffffff;
+            font-family: 'Inter', sans-serif;
+            min-height: 100vh;
+            padding: 60px 20px;
+            background-image: radial-gradient(ellipse at 20% 50%, #1a0533 0%, transparent 50%),
+                              radial-gradient(ellipse at 80% 20%, #0d1f4a 0%, transparent 50%);
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .header h1 {
+            font-size: 3rem;
+            font-weight: 800;
+            background: linear-gradient(135deg, #a78bfa, #60a5fa, #f472b6);
+            background-size: 200% 200%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: gradientShift 4s ease infinite;
+            letter-spacing: -1.5px;
+            margin-bottom: 12px;
+        }
+
+        @keyframes gradientShift {
+            0%   { background-position: 0% 50%; }
+            50%  { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .header p {
+            color: #6b7280;
+            font-size: 1rem;
+            letter-spacing: 0.3px;
+        }
+
+        .input-section {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 20px;
+            padding: 32px;
+            margin-bottom: 40px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 0 40px rgba(99, 102, 241, 0.08);
+        }
+
+        .input-section label {
+            display: block;
+            font-size: 0.85rem;
+            color: #9ca3af;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            margin-bottom: 16px;
+        }
+
+        .skills-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 16px;
+            min-height: 20px;
+        }
+
+        .skill-tag {
+            background: rgba(99, 102, 241, 0.2);
+            border: 1px solid rgba(99, 102, 241, 0.4);
+            color: #a78bfa;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            animation: popIn 0.2s ease;
+        }
+
+        @keyframes popIn {
+            from { transform: scale(0.8); opacity: 0; }
+            to   { transform: scale(1);   opacity: 1; }
+        }
+
+        .skill-tag span {
+            cursor: pointer;
+            color: #6b7280;
+            font-size: 1rem;
+            line-height: 1;
+        }
+
+        .skill-tag span:hover { color: #ef4444; }
+
+        .input-row {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 16px;
+        }
+
+        input {
+            flex: 1;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 10px;
+            padding: 12px 16px;
+            color: #ffffff;
+            font-size: 0.95rem;
+            font-family: 'Inter', sans-serif;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        input:focus {
+            border-color: #6366f1;
+            box-shadow: 0 0 0 3px rgba(99,102,241,0.15);
+        }
+
+        input::placeholder { color: #4b5563; }
+
+        .add-btn {
+            background: rgba(99,102,241,0.2);
+            color: #a78bfa;
+            border: 1px solid rgba(99,102,241,0.3);
+            border-radius: 10px;
+            padding: 12px 20px;
+            cursor: pointer;
+            font-weight: 600;
+            font-family: 'Inter', sans-serif;
+            transition: all 0.2s;
+        }
+
+        .add-btn:hover {
+            background: rgba(99,102,241,0.35);
+            transform: translateY(-1px);
+        }
+
+        .search-btn {
+            width: 100%;
+            padding: 15px;
+            font-size: 1rem;
+            font-family: 'Inter', sans-serif;
+            font-weight: 700;
+            border: none;
+            border-radius: 12px;
+            background: linear-gradient(135deg, #6366f1, #8b5cf6, #ec4899);
+            background-size: 200% 200%;
+            color: white;
+            cursor: pointer;
+            letter-spacing: 0.5px;
+            transition: all 0.3s;
+            animation: gradientShift 3s ease infinite;
+        }
+
+        .search-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(99,102,241,0.4);
+        }
+
+        .search-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .section-title {
+            font-size: 0.8rem;
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-bottom: 16px;
+            padding-left: 4px;
+        }
+
+        .high-title { color: #34d399; }
+        .medium-title { color: #fbbf24; }
+
+        .job-card {
+            background: rgba(255,255,255,0.03);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 14px;
+            padding: 20px 24px;
+            margin-bottom: 12px;
+            transition: all 0.2s;
+        }
+
+        .job-card:hover {
+            background: rgba(255,255,255,0.06);
+            border-color: rgba(255,255,255,0.15);
+            transform: translateY(-2px);
+        }
+
+        .job-card h3 {
+            font-size: 1rem;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .job-card p {
+            color: #6b7280;
+            font-size: 0.85rem;
+            margin-bottom: 10px;
+        }
+
+        .job-card a {
+            display: inline-block;
+            font-size: 0.8rem;
+            text-decoration: none;
+            margin-bottom: 12px;
+            transition: opacity 0.2s;
+        }
+
+        .job-card a:hover { opacity: 0.75; }
+
+        .score-bar {
+            height: 4px;
+            background: rgba(255,255,255,0.08);
+            border-radius: 2px;
+            overflow: hidden;
+        }
+
+        .score-fill-high {
+            height: 100%;
+            background: linear-gradient(90deg, #34d399, #059669);
+            border-radius: 2px;
+        }
+
+        .score-fill-medium {
+            height: 100%;
+            background: linear-gradient(90deg, #fbbf24, #d97706);
+            border-radius: 2px;
+        }
+
+        .results-section {
+            margin-bottom: 32px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+
+        <div class="header">
+            <h1>Placement Tracker</h1>
+            <p>Find internships matched to your skills — updated daily</p>
+        </div>
+
+        <div class="input-section">
+            <label>Your Skills</label>
+            <div class="skills-container" id="skillsContainer"></div>
+            <div class="input-row">
+                <input type="text" id="skillInput" placeholder="e.g. Python, AWS, Machine Learning..." />
+                <button class="add-btn" onclick="addSkill()">+ Add</button>
+            </div>
+            <button class="search-btn" onclick="findMatches()">Find Matches →</button>
+        </div>
+
+        <div id="results"></div>
+    </div>
+
+<script>
+    let skills = [];
+
+    function addSkill() {
+        let input = document.getElementById("skillInput");
+        let skill = input.value.trim();
+        if (skill === "") return;
+        skills.push(skill);
+        renderSkills();
+        input.value = "";
+    }
+
+    function renderSkills() {
+        let container = document.getElementById("skillsContainer");
+        container.innerHTML = "";
+        skills.forEach(function(skill, index) {
+            container.innerHTML += `
+                <div class="skill-tag">
+                    ${skill}
+                    <span onclick="removeSkill(${index})">×</span>
+                </div>`;
+        });
+    }
+
+    function removeSkill(index) {
+        skills.splice(index, 1);
+        renderSkills();
+    }
+
+    document.getElementById("skillInput").addEventListener("keypress", function(e) {
+        if (e.key === "Enter") addSkill();
+    });
+
+    function findMatches() {
+        if (skills.length === 0) {
+            alert("Please add at least one skill!");
+            return;
+        }
+
+        let btn = document.querySelector(".search-btn");
+        btn.disabled = true;
+        btn.textContent = "Searching...";
+
+        let payload = JSON.stringify({ skills: skills });
+        console.log("Sending payload:", payload);
+
+        fetch("https://rjdiynjsll.execute-api.ap-south-1.amazonaws.com/prod/matches", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: payload
+        })
+        .then(function(response) {
+            return response.json();
+        })
+        .then(function(data) {
+            console.log("Raw data:", data);
+            let parsed;
+            if (typeof data.body === "string") {
+                parsed = JSON.parse(data.body);
+            } else if (data.high !== undefined) {
+                parsed = data;
+            } else {
+                parsed = { high: [], medium: [] };
+            }
+            console.log("Parsed:", parsed);
+            displayResults(parsed);
+            btn.disabled = false;
+            btn.textContent = "Find Matches →";
+        })
+        .catch(function(error) {
+            console.log("Error:", error);
+            btn.disabled = false;
+            btn.textContent = "Find Matches →";
+        });
+    }
+
+    function displayResults(data) {
+        let container = document.getElementById("results");
+        container.innerHTML = "";
+
+        if (data.high.length === 0 && data.medium.length === 0) {
+            container.innerHTML = `
+                <div style="text-align:center; color:#6b7280; padding:40px;">
+                    No matches found. Try adding more skills!
+                </div>`;
+            return;
+        }
+
+        if (data.high.length > 0) {
+            let html = `<div class="results-section">
+                <div class="section-title high-title">✅ High Match — ${data.high.length} found</div>`;
+            data.high.forEach(function(job) {
+                html += `
+                <div class="job-card">
+                    <h3>${job.title}</h3>
+                    <p>${job.company}</p>
+                    <a href="${job.url}" target="_blank" style="color:#a78bfa;">View Internship →</a>
+                    <div class="score-bar">
+                        <div class="score-fill-high" style="width:${job.score}%"></div>
+                    </div>
+                </div>`;
+            });
+            html += `</div>`;
+            container.innerHTML += html;
+        }
+
+        if (data.medium.length > 0) {
+            let html = `<div class="results-section">
+                <div class="section-title medium-title">🔶 Medium Match — ${data.medium.length} found</div>`;
+            data.medium.forEach(function(job) {
+                html += `
+                <div class="job-card">
+                    <h3>${job.title}</h3>
+                    <p>${job.company}</p>
+                    <a href="${job.url}" target="_blank" style="color:#fbbf24;">View Internship →</a>
+                    <div class="score-bar">
+                        <div class="score-fill-medium" style="width:${job.score}%"></div>
+                    </div>
+                </div>`;
+            });
+            html += `</div>`;
+            container.innerHTML += html;
+        }
+    }
+</script>
+</body>
+</html>
